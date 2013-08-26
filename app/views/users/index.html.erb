@@ -6,6 +6,10 @@
         <button class="friend" data-id="<%= user.id %>">
           Friend them down!
         </button>
+      <% elsif Friendship.can_unfriend?(current_user.id, user.id) %>
+        <button class="unfriend" data-id="<%= user.id %>">
+          Terminate friendship :-(
+        </button>
       <% end %>
     </li>
   <% end %>
@@ -18,11 +22,23 @@
     $currentTarget.text("Friending...");
 
     $.ajax({
-      url: "/friendships",
+      url: "/users/" + $currentTarget.attr("data-id") + "/friendship",
       type: "POST",
-      data: {
-        friendship: { in_friend_id: $currentTarget.attr("data-id") }
-      }, success: function () {
+      success: function () {
+        $currentTarget.remove();
+      }
+    });
+  });
+
+  $("ul.friends_list").on("click", "button.unfriend", function (event) {
+    var $currentTarget = $(event.currentTarget);
+    $currentTarget.attr("disabled", true);
+    $currentTarget.text("Unfriending...");
+
+    $.ajax({
+      url: "/users/" + $currentTarget.attr("data-id") + "/friendship",
+      type: "DELETE",
+      success: function () {
         $currentTarget.remove();
       }
     });
