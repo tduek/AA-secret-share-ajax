@@ -1,8 +1,29 @@
 <h1><%= @user.username %></h1>
 
 <h2>Secrets</h2>
-<ul>
+<ul class="secrets-list">
   <% @user.received_secrets.each do |secret| %>
     <li><%= secret.title %></li>
   <% end %>
 </ul>
+
+<%= render "secrets/form", :secret => @secret %>
+
+<script>
+  $("form.secrets-form").on("submit", function (event) {
+    event.preventDefault();
+
+    var $currentTarget = $(event.currentTarget);
+    var data = $currentTarget.serializeJSON();
+
+    $.ajax({
+      url: "/secrets",
+      type: "POST",
+      data: data,
+      success: function () {
+        $("ul.secrets-list").append($("<li>").text(data.secret.title));
+        $currentTarget.find("input#secret_title").val("");
+      }
+    });
+  });
+</script>

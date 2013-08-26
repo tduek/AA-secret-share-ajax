@@ -22,10 +22,12 @@ class UsersController < ApplicationController
   end
 
   def show
-    if params.include?(:id)
-      @user = User.find(params[:id])
-    else
+    if !params.include?(:id)
       redirect_to user_url(current_user)
+      return
     end
+
+    @user = User.find(params[:id])
+    @secret = Secret.new(:recipient_id => @user.id)
   end
 end
