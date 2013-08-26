@@ -1,4 +1,6 @@
 class SecretsController < ApplicationController
+  before_filter :require_current_user!
+
   def new
     @secret = Secret.new
     @secret.recipient_id = params[:user_id]
