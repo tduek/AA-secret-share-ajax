@@ -3,8 +3,28 @@
     <li>
       <%= user.username %>
       <% if Friendship.can_friend?(current_user.id, user.id) %>
-        <%= render "friendships/form", :user => user %>
+        <button class="friend" data-id="<%= user.id %>">
+          Friend them down!
+        </button>
       <% end %>
     </li>
   <% end %>
 </ul>
+
+<script>
+  $("ul.friends_list").on("click", "button.friend", function (event) {
+    var $currentTarget = $(event.currentTarget);
+    $currentTarget.attr("disabled", true);
+    $currentTarget.text("Friending...");
+
+    $.ajax({
+      url: "/friendships",
+      type: "POST",
+      data: {
+        friendship: { in_friend_id: $currentTarget.attr("data-id") }
+      }, success: function () {
+        $currentTarget.remove();
+      }
+    });
+  });
+</script>
