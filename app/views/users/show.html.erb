@@ -7,7 +7,7 @@
   <% end %>
 </ul>
 
-<%= render "secrets/form", :secret => @secret %>
+<%= render "secrets/form", secret: @secret %>
 
 <script>
   $("form.secrets-form").on("submit", function (event) {
@@ -15,9 +15,10 @@
 
     var $currentTarget = $(event.currentTarget);
     var data = $currentTarget.serializeJSON();
+    var $form = $(this);
 
     $.ajax({
-      url: "/secrets",
+      url: $form.attr("action"),
       type: "POST",
       data: data,
       success: function () {
