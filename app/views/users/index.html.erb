@@ -37,18 +37,16 @@
       .toggleClass("can-friend");
   }
 
-  ["form.friend", "form.unfriend"].forEach(function (form) {
-    $(form).on("submit", function (event) {
-      event.preventDefault();
-      var $currentTarget = $(event.currentTarget);
-      var $form = $(this);
+  $("ul.friends_list").on("submit", "form", function (event) {
+    event.preventDefault();
+    var $currentTarget = $(event.currentTarget);
+    var $form = $(this);
 
-      $.ajax({
-        url: $form.attr("action"),
-        type: "POST",
-        data: $currentTarget.serializeJSON(),
-        success: function () { toggleFriendButtons($currentTarget) }
-      });
+    $.ajax({
+      url: $form.attr("action"),
+      type: "POST",
+      data: $currentTarget.serializeJSON(),
+      success: function () { toggleFriendButtons($currentTarget) }
     });
   });
 </script>
