@@ -6,6 +6,6 @@ span.can-friend form.unfriend, form.friend {
   display: none;
 }
 
-form.unfriend, form.friend {
+span.can-friend form.friend, form.unfriend {
   display: block;
 }
