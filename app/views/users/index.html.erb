@@ -37,11 +37,6 @@
       .toggleClass("can-friend");
   }
 
-  var BUTTON_METHODS = {
-    "button.friend": "POST",
-    "button.unfriend": "DELETE"
-  };
-
   ["form.friend", "form.unfriend"].forEach(function (form) {
     $(form).on("submit", function (event) {
       event.preventDefault();
