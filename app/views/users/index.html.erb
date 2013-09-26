@@ -34,8 +34,7 @@
   function toggleFriendButtons ($button) {
     $button
       .parents(".friend-buttons")
-      .toggleClass("can-friend")
-      .toggleClass("can-unfriend");
+      .toggleClass("can-friend");
   }
 
   var BUTTON_METHODS = {
@@ -44,13 +43,14 @@
   };
 
   ["form.friend", "form.unfriend"].forEach(function (form) {
-    $("form").on("submit", buttonClass, function (event) {
+    $(form).on("submit", function (event) {
+      event.preventDefault();
       var $currentTarget = $(event.currentTarget);
       var $form = $(this);
 
       $.ajax({
         url: $form.attr("action"),
-        type: "POST"
+        type: "POST",
         data: $currentTarget.serializeJSON(),
         success: function () { toggleFriendButtons($currentTarget) }
       });
