@@ -2,10 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-span.friend-buttons.friend form.unfriend, form.friend {
+span.can-friend form.unfriend, form.friend {
   display: none;
 }
 
-span.friend-buttons form.friend, form.unfriend {
-  display: none;
+form.unfriend, form.friend {
+  display: block;
 }
