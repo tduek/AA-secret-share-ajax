@@ -1,6 +1,6 @@
 <ul class="friends_list">
   <% @users.each do |user| %>
-    <% next if user == current_user %>
+    <%# next if user == current_user %>
 
     <li>
       <%= user.username %>
@@ -12,12 +12,23 @@
       <% end %>
 
       <span class="friend-buttons <%= friend_state %>">
-        <button class="friend" data-id="<%= user.id %>">
-          Friend them down!
-        </button>
-        <button class="unfriend" data-id="<%= user.id %>">
-          Terminate friendship :-(
-        </button>
+
+        <form action="<%= user_friendship_url(user) %>" method="post"
+               class="friend">
+          <input type="hidden" name="authenticity_token"
+                              value="<%= form_authenticity_token %>">
+
+          <input type="submit" name="commit" value="Friend them!">
+        </form>
+
+        <form action="<%= user_friendship_url(user) %>" method="post"
+               class="unfriend">
+          <input type="hidden" name="authenticity_token"
+                              value="<%= form_authenticity_token %>">
+          <input type="hidden" name="_method" value="delete">
+
+          <input type="submit" name="commit" value="Unfriend a sucka!">
+        </form>
       </span>
     </li>
   <% end %>
@@ -36,12 +47,15 @@
     "button.unfriend": "DELETE"
   };
 
-  ["button.friend", "button.unfriend"].forEach(function (buttonClass) {
-    $("ul.friends_list").on("click", buttonClass, function (event) {
+  ["form.friend", "form.unfriend"].forEach(function (form) {
+    $("form").on("submit", buttonClass, function (event) {
       var $currentTarget = $(event.currentTarget);
+      var $form = $(this);
+
       $.ajax({
-        url: "/users/" + $currentTarget.attr("data-id") + "/friendship",
-        type: BUTTON_METHODS[buttonClass],
+        url: $form.attr("action"),
+        type: "POST"
+        data: $currentTarget.serializeJSON(),
         success: function () { toggleFriendButtons($currentTarget) }
       });
     });
