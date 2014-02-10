@@ -39,14 +39,13 @@
 
   $("ul.friends_list").on("submit", "form", function (event) {
     event.preventDefault();
-    var $currentTarget = $(event.currentTarget);
     var $form = $(this);
 
     $.ajax({
       url: $form.attr("action"),
       type: "POST",
-      data: $currentTarget.serializeJSON(),
-      success: function () { toggleFriendButtons($currentTarget) }
+      data: $form.serializeJSON(),
+      success: function () { toggleFriendButtons($form) }
     });
   });
 </script>
