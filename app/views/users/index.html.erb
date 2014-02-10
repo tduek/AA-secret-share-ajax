@@ -7,14 +7,16 @@
 
       <% can_friend = Friendship.can_friend?(current_user.id, user.id) %>
 
-      <span class="friend-buttons<%= " can-friend" if can_friend %>">
+      <div class="friend-buttons<%= " can-friend" if can_friend %>">
 
         <form action="<%= user_friendship_url(user) %>" method="post"
                class="friend">
           <input type="hidden" name="authenticity_token"
                               value="<%= form_authenticity_token %>">
 
-          <input type="submit" name="commit" value="Friend them!">
+          <span class="disabled-message">Friending...</span>
+
+          <input class="free" type="submit" value="Friend them!">
         </form>
 
         <form action="<%= user_friendship_url(user) %>" method="post"
@@ -23,15 +25,20 @@
                               value="<%= form_authenticity_token %>">
           <input type="hidden" name="_method" value="delete">
 
-          <input type="submit" name="commit" value="Unfriend a sucka!">
+          <span class="disabled-message">Unfriending...</span>
+
+          <input class="free" type="submit" value="Unfriend a sucka!">
+
+
         </form>
-      </span>
+      </div>
     </li>
   <% end %>
 </ul>
 
 <script>
   function toggleFriendButtons ($button) {
+    $(".friend-buttons").removeClass("is-disabled");
     $button
       .parents(".friend-buttons")
       .toggleClass("can-friend");
@@ -45,7 +52,8 @@
       url: $form.attr("action"),
       type: "POST",
       data: $form.serializeJSON(),
-      success: function () { toggleFriendButtons($form) }
+      success: function () { toggleFriendButtons($form) },
+      beforeSend: function () { $(".friend-buttons").addClass("is-disabled") }
     });
   });
 </script>

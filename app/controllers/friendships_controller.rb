@@ -6,12 +6,16 @@ class FriendshipsController < ApplicationController
     @friendship.out_friend_id = current_user.id
     @friendship.save!
 
+    sleep(1)
+
     head :ok
   end
 
   def destroy
     @friendship = Friendship.where("out_friend_id = ? AND in_friend_id = ?", current_user.id, params[:user_id]).first
     @friendship.destroy
+
+    sleep(1)
 
     head :ok
   end
