@@ -13,9 +13,8 @@
   $("form.secrets-form").on("submit", function (event) {
     event.preventDefault();
 
-    var $currentTarget = $(event.currentTarget);
-    var data = $currentTarget.serializeJSON();
     var $form = $(this);
+    var data = $form.serializeJSON();
 
     $.ajax({
       url: $form.attr("action"),
@@ -23,7 +22,7 @@
       data: data,
       success: function () {
         $("ul.secrets-list").append($("<li>").text(data.secret.title));
-        $currentTarget.find("input#secret_title").val("");
+        $form.find("input#secret_title").val("");
       }
     });
   });
